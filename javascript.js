@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById(sectionId).classList.remove("hidden");
     }
 
-    // Deur openen – speler klikt op deurknop en gaat naar spookkamer👻
+    // Deur openen – speler klikt op deurknop en gaat naar spookkamer👻🚪
     deurKnop.addEventListener("click", () => {
         audio.play();
         setTimeout(() => {
@@ -107,8 +107,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const jumpscare = document.getElementById("jumpscare");
     const melding = document.getElementById("melding");
     const restartBtn = document.getElementById("restart-btn");
+    const popupOverlay = document.getElementById("popup-overlay");
+    const popupBtn = document.getElementById("popup-ok");
 
-    // Verplaatst het spook naar een willekeurige plek binnen het scherm😈💀👻☠️👾
+    let bewegen;
+    let verliesTimer;
+
+    function startGame() {
+
+        bewegen = setInterval(randomPositie, 600);
+        // Timer voor verlies+ melding en jumbscare afbeelding en audio
+        verliesTimer = setTimeout(() => {
+            if (melding.textContent === "") {
+                clearInterval(bewegen);
+                spook.style.display = "none";
+                jumpscare.style.display = "block";
+                melding.textContent = "💀 Too late, spookies are gone, try again";
+                const scareSound = new Audio("audio/jumbscare.mp3");
+                scareSound.play();
+                setTimeout(() => {
+                    restartBtn.style.display = "block";
+                }, 1000);
+            }
+        }, 20000);
+    }
+
     function randomPositie() {
         const randomTop = Math.random() * 80;
         const randomLeft = Math.random() * 80;
@@ -116,11 +139,9 @@ document.addEventListener("DOMContentLoaded", () => {
         spook.style.left = randomLeft + "%";
     }
 
-    let bewegen = setInterval(randomPositie, 600);
-
-    // Speler heeft het spook gevonden > winnen afbeelding + melding🤠✊🎉🔒
     spook.addEventListener("click", () => {
         clearInterval(bewegen);
+        clearTimeout(verliesTimer);
         spook.style.display = "none";
         happyspook.style.display = "block";
         melding.textContent = "🎉 Gotcha! You've caught the spookie";
@@ -129,23 +150,14 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 500);
     });
 
-// Timer🤫:  speler heeft 20 seconden om het spook te vinden- Als tijd om is zonder die te vinden → jumpscare😂🤣+ melding
-    setTimeout(() => {
-        if (melding.textContent === "") {
-            clearInterval(bewegen);
-            spook.style.display = "none";
-            jumpscare.style.display = "block";
-            melding.textContent = "💀 Too late, spookies are gone, try again";
-            const scareSound = new Audio("audio/jumbscare.mp3");
-            scareSound.play();
-            setTimeout(() => {
-                restartBtn.style.display = "block";
-            }, 1000);
-        }
-    }, 20000);
-
-    // Restart knop- game opniew spelen🔁
     restartBtn.addEventListener("click", () => {
         location.reload();
     });
+
+// Spook en timer starten NA klikken op OK
+    popupBtn.addEventListener("click", () => {
+        popupOverlay.style.display = "none";
+        startGame(); 
+    });
 });
+
