@@ -30,8 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     let frames = [
-        "afbeeldingen/klopdeur.png", 
-        "afbeeldingen/deur1.png",
+        "afbeeldingen/deurmethand.png",
         "afbeeldingen/deur2.png",
         "afbeeldingen/deur3.png",
         "afbeeldingen/deur4.png",
