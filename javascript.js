@@ -115,7 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function startGame() {
 
-        bewegen = setInterval(randomPositie, 600);
+        bewegen = setInterval(randomPositie, 500);
         // Timer voor verlies+ melding en jumbscare afbeelding en audio
         verliesTimer = setTimeout(() => {
             if (melding.textContent === "") {
